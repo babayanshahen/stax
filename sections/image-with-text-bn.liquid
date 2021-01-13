@@ -1,0 +1,179 @@
+<div class="bn-section-2020 custom-html-section feature-row" data-section-id="{{ section.id }}" data-section-type="custom-html-section">
+  {% capture image_layout %}
+    <div class="one-whole small--one-whole medium--one-whole feature-row__item feature-row__image ">
+      {% if section.settings.image_desktop != blank %}
+        <noscript>
+          <div class="feature-row__image-wrapper">
+            {{ section.settings.image_desktop | img_url: '600x600' | img_tag: section.settings.image_desktop.alt, 'feature-row__image' }}
+          </div>
+        </noscript>
+      {% if section.settings.imageHeader != blank %}
+      <div class="bn_image_with_text_heading_container">
+        <h1 class="bn_image_with_text_heading_content">{{ section.settings.imageHeader }}</h1>
+      </div>
+      {% endif %}
+      <div class="feature-row__image-wrapper" style="padding-top:{{ 1 | divided_by: section.settings.image_desktop.aspect_ratio | times: 100}}%;">
+        {% assign mobile_aspect = 1 | divided_by: section.settings.image_mobile.aspect_ratio | times: 100 %}
+        {% assign img_url_desktop = section.settings.image_desktop | img_url: '1x1' | replace: '_1x1' %}
+        {% assign img_url_mobile = section.settings.image_mobile | img_url: '1x1' | replace: '_1x1' %}
+        {% if section.settings.checkbox_Blank == true %}
+        <a target="blank" href="{{ section.settings.image_link_bn }}" class="bn_baner_a">
+          <img class="feature-row__image "
+               data-src="{{ img_url_desktop }}"
+               {% if section.settings.image_mobile != blank%}
+               img-mobile="{{img_url_mobile}}"
+               aspect-mobile="{{mobile_aspect}}"
+               {% endif %}
+               src="{{ img_url_desktop }}"
+               data-aspectratio="{{ section.settings.image_desktop.aspect_ratio }}"
+               data-sizes="auto"
+               alt="Top Banner Photo">
+               <h2 class="bn-images-banner-title bn_i_w_t_b  bn_image_with_text_font_size" style="color:{{ section.settings.image_subheading_color}}; {% if section.settings.bn_alignment == true %} right:20px;left:auto;  {% endif %}">{{ section.settings.image_subheading}}</h2>
+                {% if section.settings.image_button_text != blank %}
+                  <button class="bn_button_buy_now bn_i_w_t " onclick="window.open('{{ section.settings.image_link_bn }}', '_blank');" style="{% if section.settings.bn_alignment == true %} right:20px;left:auto;  {% endif %}color:{{ section.settings.image_button_text_color}};background-color:{{ section.settings.image_button_background_color}}">
+                    {{ section.settings.image_button_text}}
+                  </button>
+                {% endif %}
+        </a>
+         {% else %}
+        <a  class="bn_baner_a" href="{{ section.settings.image_link_bn }}">
+          <img class="feature-row__image "
+               data-src="{{ img_url_desktop }}"
+               {% if section.settings.image_mobile != blank%}
+               img-mobile="{{img_url_mobile}}"
+               aspect-mobile="{{mobile_aspect}}"
+               {% endif %}
+               src="{{ img_url_desktop }}"
+               data-aspectratio="{{ section.settings.image_desktop.aspect_ratio }}"
+               data-sizes="auto"
+               alt="Top Banner Photo">
+               <h2 class="bn-images-banner-title bn_i_w_t_b bn_image_with_text_font_size" style="color:{{ section.settings.image_subheading_color}};{% if section.settings.bn_alignment == true %} right:20px;left:auto; {% endif %}">{{ section.settings.image_subheading}}</h2>
+                {% if section.settings.image_button_text != blank %}
+                  <button class="bn_button_buy_now bn_i_w_t" onclick="location.href='{{ section.settings.image_link_bn }}'" style="{% if section.settings.bn_alignment == true %} right:20px;left:auto;  {% endif %}color:{{ section.settings.image_button_text_color}};background-color:{{ section.settings.image_button_background_color}}">
+                    {{ section.settings.image_button_text}}
+                  </button>
+                {% endif %}
+        </a>
+		{% endif %}
+      </div>
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {% endif %}
+    </div>
+  {% endcapture %}
+  <div class="feature-row grid large-up--grid--table">
+    {% if section.settings.layout == 'left' %}
+      {{ image_layout }}
+    {% endif %}
+<!--     <div class="grid__item one-whole small--one-whole medium--one-whole feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }} ">
+      <div class="feature-row__content">
+        {% if section.settings.title != blank %}
+          <h2>{{ section.settings.title | escape }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="rte-setting featured-row__subtext">{{ section.settings.text }}</div>
+        {% endif %}
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="btn">
+            {{ section.settings.button_label | escape }}
+          </a>
+        {% endif %}
+      </div>
+    </div> -->
+    {% if section.settings.layout == 'right' %}
+      {{ image_layout }}
+    {% endif %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Image with text BN",
+    "class": "index-section image-with-text",
+    "settings": [
+	  {
+        "type": "text",
+        "id": "image_link_bn",
+        "label": "Image Link"
+      },
+		{
+         "type":      "checkbox",
+         "id":        "checkbox_Blank",
+         "label":     "blank",
+         "default":   false
+      },
+		{
+       "type": "text",
+       "id": "imageHeader",
+       "default": "Heading",
+       "label": " Heading"
+		},
+      {
+        "type": "image_picker",
+        "id": "image_desktop",
+        "label": "Image Desktop"
+      },
+       {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "Image Mobile"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Image alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "image_subheading",
+        "label": "Text",
+        "default": "Text03"
+    },
+    {
+        "type": "color",
+        "id": "image_subheading_color",
+        "label": "Text Color",
+        "default": "#3D4246"
+    },
+    {
+        "type": "text",
+        "id": "image_button_text",
+        "label": "Text",
+        "default": "Shop Now"
+    },
+    {
+        "type": "color",
+        "id": "image_button_text_color",
+        "label": "Button Text Color",
+        "default": "#3D4246"
+    },
+    {
+        "type": "color",
+        "id": "image_button_background_color",
+        "label": "Button Background Color",
+        "default": "#3D4246"
+    },
+    {
+      "type": "checkbox",
+      "id": "bn_alignment",
+      "label": "Right alignment"
+    }
+    ],
+    "presets": [
+      {
+        "name": "Image with text BN",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}
